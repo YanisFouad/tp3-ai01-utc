@@ -8,6 +8,7 @@ typedef struct s_processus {
 t_processus* creer_processus(int pid, int arrivee, int duree);
 void free_processus(t_processus* p);
 t_processus* charger_processus(char* nom_fichier, int* nb_processus);
+void afficher_processus(t_processus* p);
 
 t_processus* fifo_init();
 t_processus* fifo_clear(t_processus* file);
