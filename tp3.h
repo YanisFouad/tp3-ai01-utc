@@ -1,3 +1,5 @@
+
+
 typedef struct s_processus {
     int pid; // identifiant du processus
     int arrivee; // temps d'arrivee

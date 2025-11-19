@@ -61,5 +61,8 @@ int main(int argc, char const *argv[])
 
     t_processus* liste = charger_processus("./data", &nb_processus);
     printf("Nombre de processus chargés: %d\n", nb_processus);
+    afficher_processus(liste);
+    printf ("Simulation FCFS:\n");
+    simuler_fcfs(liste, nb_processus);
     return 0;
 }

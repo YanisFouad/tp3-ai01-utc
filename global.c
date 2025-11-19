@@ -18,43 +18,44 @@ void free_processus(t_processus* p) {
 }
 
 t_processus* charger_processus(char* nom_fichier, int* nb_processus) {
-    FILE* file = fopen(nom_fichier, "r");
-    t_processus* tete = NULL;
-    t_processus* last_processus = NULL;
-    t_processus* current_processus;
+    FILE* file = fopen(nom_fichier, "r"); // Ouvre le fichier en mode lecture
+    t_processus* tete = NULL; // Pointeur vers la tête de la liste chaînée
+    t_processus* last_processus = NULL;// Pointeur vers le dernier processus ajouté
+    t_processus* current_processus; // Pointeur temporaire pour le processus courant
 
-    int pid, arrivee, duree;
-    int i = 0;
+    int pid, arrivee, duree; // Variables pour stocker les données lues
+    int i = 0; // Compteur de processus
 
-    if (file != NULL) {
-        while (fscanf(file, "%d %d %d\n", &pid, &arrivee, &duree) != EOF) {
-            current_processus = creer_processus(pid, arrivee, duree);
+    if (file != NULL) { // Vérifie si le fichier a été ouvert 
+        while (fscanf(file, "%d %d %d\n", &pid, &arrivee, &duree) != EOF) {// Lit les données ligne par ligne
+            // Continue de lire jusqu'à la fin du fichier(EOF - End Of File)
+            //fscanf lit les données formatées à partir du fichier et les stocke dans les variables pid, arrivee et duree
+            current_processus = creer_processus(pid, arrivee, duree);// Crée un nouveau processus avec les données lues
 
-            if (tete == NULL) {
-                tete = current_processus;
+            if (tete == NULL) {// Si c'est le premier processus, on initialise la tête de la liste
+                tete = current_processus;// Initialisation de la tête de la liste
             } else {
-                last_processus->suivant = current_processus;
+                last_processus->suivant = current_processus;// Ajoute le processus courant à la fin de la liste
             }
 
-            last_processus = current_processus;
-            i++;
-            (*nb_processus)++;
+            last_processus = current_processus; // Met à jour le pointeur vers le dernier processus ajouté
+            i++;// incrémente le compteur de processus
+            (*nb_processus)++;// incrémente le nombre de processus via le pointeur
         }
 
-        fclose(file);
+        fclose(file);// Ferme le fichier après la lecture
 
-        return tete;
+        return tete;// retourne la tête de la liste chaînée des processus
     } else {
-        printf("Impossible d'ouvrir le ficher demandé.\n");
-        exit(EXIT_FAILURE);
+        printf("Impossible d'ouvrir le ficher demandé.\n"); //Si on n'arrive pas à ouvrir le fichier 
     }
 
     return tete;
 }
 
-void afficher_processus(t_processus* p) {
-    while (p != NULL) {
-        printf("PID: %d, Arrivee: %d, Duree: %d\n", p->pid, p->arrivee, p->duree);
-        p = p->suivant;
+void afficher_processus(t_processus* p) {// Affiche les informations d'un processus
+    while (p != NULL) { // Parcourt la liste des processus
+        printf("PID: %d, Arrivee: %d, Duree: %d\n", p->pid, p->arrivee, p->duree); // Affiche les informations du processus courant
+        p = p->suivant;// Passe au processus suivant
     }
 }
