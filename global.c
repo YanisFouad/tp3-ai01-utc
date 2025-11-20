@@ -1,6 +1,8 @@
 #include "tp3.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 
 t_processus* creer_processus(int pid, int arrivee, int duree) {
     t_processus* processus = (t_processus*) malloc(sizeof(t_processus));
@@ -53,9 +55,44 @@ t_processus* charger_processus(char* nom_fichier, int* nb_processus) {
     return tete;
 }
 
-void afficher_processus(t_processus* p) {// Affiche les informations d'un processus
-    while (p != NULL) { // Parcourt la liste des processus
-        printf("PID: %d, Arrivee: %d, Duree: %d\n", p->pid, p->arrivee, p->duree); // Affiche les informations du processus courant
-        p = p->suivant;// Passe au processus suivant
+void afficher_processus(t_processus* p) {
+    if (p == NULL) {
+        printf("La liste des processus est vide, impossible de l'afficher.\n");
+        return;
+    }
+
+    while (p != NULL) {
+        printf("PID: %d, Arrivee: %d, Duree: %d\n", p->pid, p->arrivee, p->duree);
+        p = p->suivant;
+    }
+}
+
+void mssleep(int ms) {
+    struct timespec req = { 0 };
+    req.tv_sec = ms / 1000;
+    req.tv_nsec = (ms % 1000) * 1000000L;
+    nanosleep(&req, (struct timespec*) NULL);
+}
+
+void save_simulation_data(int start_time, int duration, int processus_id, char* name, float y_position, char* file_name) {
+    FILE* file = fopen(file_name, "a");
+
+    if (file != NULL) {
+        fprintf(file, "%f %d %d %d %s \n", y_position, start_time, duration, processus_id, name);
+        fclose(file);
+    } else {
+        printf("Impossible d'ouvrir le fichier : %s", file_name);
+    }
+}
+
+void open_windows_file(char* file_path) {
+    char command[512];
+    sprintf(command, "code %s", file_path);
+
+    printf("Ouverture de l'image...\n");
+    int command_result = system(command);
+    
+    if (command_result == -1) {
+        printf("Erreur lors de l'ouverture du fichier %s\n", file_path);
     }
 }

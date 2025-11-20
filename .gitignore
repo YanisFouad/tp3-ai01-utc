@@ -1,2 +1,5 @@
 main
-data
+img/*.png
+.vscode
+data/*
+!data/.gitkeep
