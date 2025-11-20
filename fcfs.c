@@ -67,12 +67,12 @@ void simuler_fcfs(t_processus* tableau, int nb_processus){
     t_processus* courant = NULL;
 // Tant que tout les processus ne sont pas terminés
     while (nb_termines < nb_processus ){
-        for(int i = 0; i <nb_processus; i++){
-            if (suivant->arrivee == t){ // vérifier les processus arrivés au temps courant
+        while(suivant != NULL && suivant->arrivee == t){
+            //if (suivant->arrivee == t){ // vérifier les processus arrivés au temps courant
                 t_processus* p = creer_processus(suivant->pid, suivant->arrivee, suivant->duree);
                 file = fifo_enfiler(file, p); // ajouter le processus à la file d'attente
                 printf("Temps %d : Arrivée du processus PID %d\n", t, p->pid);
-            }
+           // }
             suivant = suivant->suivant;
         }
 
