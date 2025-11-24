@@ -59,7 +59,7 @@ t_processus* fifo_defiler(t_processus** file){
 
 }
 
-void simuler_fcfs(t_processus* tableau, int nb_processus){
+int simuler_fcfs(t_processus* tableau, int nb_processus){
     int t = 0; // temps courant
     int nb_termines = 0; // nombre de processus terminés
     t_processus* file = fifo_init(); // initialisation de la file d'attente
@@ -82,8 +82,8 @@ void simuler_fcfs(t_processus* tableau, int nb_processus){
 
             courant = fifo_defiler(&file); // défiler le premier processus
             printf("Temps %d : Début de l'exécution du processus PID %d pour une durée de %d\n", t, courant->pid, courant->duree);
+            save_simulation_data(t, courant->duree, courant->pid, "FCFS", Y_FCFS, FCFS_DATA_FILE);
         }
-
 
         // Exécution du processus courant si il y en a un
         if(courant != NULL){
@@ -100,9 +100,10 @@ void simuler_fcfs(t_processus* tableau, int nb_processus){
             //printf("Temps %d : Aucun processus en cours d'exécution\n", t);
         }
         t++; // si la file est vide, on incrémente le temps courant
-        
+        mssleep(TICK_DURATION);
     }
-        
+    
+    return t;
 }
 
 

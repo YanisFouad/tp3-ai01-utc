@@ -71,17 +71,17 @@ t_processus* lsorted_extraire_premier(t_processus** liste) {
     return extracted_processus;
 }
 
-void simuler_sjf(t_processus* tableau, int nb_processus) {
+int simuler_sjf(t_processus* tableau, int nb_processus) {
     int nb_tick = 0;
     t_processus* current = tableau;
     t_processus* to_procede = lsorted_init();
-    t_processus* procceding = NULL;
+    t_processus* proceding = NULL;
 
-    while (current != NULL || procceding != NULL || lsorted_vide(to_procede) == 0) {
+    while (current != NULL || proceding != NULL || lsorted_vide(to_procede) == 0) {
         // Fin du processus si arrivé à sa fin si il y en a un en cours d'éxecution
-        if (procceding != NULL && procceding->duree == 0) {
-            printf("t = %d : fin P%d\n", nb_tick, procceding->pid);
-            procceding = NULL;
+        if (proceding != NULL && proceding->duree == 0) {
+            printf("t = %d : fin P%d\n", nb_tick, proceding->pid);
+            proceding = NULL;
         }
 
         // Ajouter les processus à charger au tick actuel
@@ -93,19 +93,22 @@ void simuler_sjf(t_processus* tableau, int nb_processus) {
         }
 
         // Démararer l'exécution du processus
-        if (procceding == NULL && lsorted_vide(to_procede) == 0) {
-            procceding = lsorted_extraire_premier(&to_procede);
-            printf("t = %d : run P%d duree = %d\n", nb_tick, procceding->pid, procceding->duree);
-            // save_simulation_data(nb_tick, procceding->duree, procceding->pid, "SJF", Y_SJF, SJF_DATA_FILE);
+        if (proceding == NULL && lsorted_vide(to_procede) == 0) {
+            proceding = lsorted_extraire_premier(&to_procede);
+            printf("t = %d : run P%d duree = %d\n", nb_tick, proceding->pid, proceding->duree);
+            save_simulation_data(nb_tick, proceding->duree, proceding->pid, "SJF", Y_SJF, SJF_DATA_FILE);
         }
 
-        if (procceding != NULL) {
-            procceding->duree--;
+        if (proceding != NULL) {
+            proceding->duree--;
         }
 
         nb_tick++;
         mssleep(TICK_DURATION);
     }
 
-    generate_single_processus_gantt(SJF_DATA_FILE, "./img/sjf_gantt.png", "SJF", nb_tick - 1);
+    lsorted_clear(to_procede);
+    lsorted_clear(proceding);
+
+    return nb_tick - 1;
 }
