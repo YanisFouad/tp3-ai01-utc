@@ -12,7 +12,7 @@
 //     return file;
 // }
 
- t_processus* fifo_init (){
+ t_processus* fifo_init (){ // On itinialise une file vide
     return NULL;
     }
  t_processus* fifo_clear (t_processus* file){
@@ -59,15 +59,15 @@ t_processus* fifo_defiler(t_processus** file){
 
 }
 
-void simuler_fcfs(t_processus* tableau, int nb_processus){
+void simuler_fcfs(t_processus* tableau, int nb_processus){//
     int t = 0; // temps courant
     int nb_termines = 0; // nombre de processus terminés
     t_processus* file = fifo_init(); // initialisation de la file d'attente
     t_processus* suivant = tableau;
     t_processus* courant = NULL;
 // Tant que tout les processus ne sont pas terminés
-    while (nb_termines < nb_processus ){
-        while(suivant != NULL && suivant->arrivee == t){
+    while (nb_termines < nb_processus ){//
+        while(suivant != NULL && suivant->arrivee == t){//
             //if (suivant->arrivee == t){ // vérifier les processus arrivés au temps courant
                 t_processus* p = creer_processus(suivant->pid, suivant->arrivee, suivant->duree);
                 file = fifo_enfiler(file, p); // ajouter le processus à la file d'attente

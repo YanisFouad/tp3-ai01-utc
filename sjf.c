@@ -92,7 +92,7 @@ void simuler_sjf(t_processus* tableau, int nb_processus) {
             to_procede = lsorted_inserer_trie(to_procede, to_insert);
         }
 
-        // Démararer l'exécution du processus
+        // Démarrer l'exécution du processus
         if (procceding == NULL && lsorted_vide(to_procede) == 0) {
             procceding = lsorted_extraire_premier(&to_procede);
             printf("t = %d : run P%d duree = %d\n", nb_tick, procceding->pid, procceding->duree);
@@ -107,5 +107,5 @@ void simuler_sjf(t_processus* tableau, int nb_processus) {
         mssleep(TICK_DURATION);
     }
 
-    generate_single_processus_gantt(SJF_DATA_FILE, "./img/sjf_gantt.png", "SJF", nb_tick - 1);
+    //generate_single_processus_gantt(SJF_DATA_FILE, "./img/sjf_gantt.png", "SJF", nb_tick - 1);
 }
